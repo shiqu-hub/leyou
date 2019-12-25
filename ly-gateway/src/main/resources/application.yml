@@ -7,8 +7,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:10086/eureka
-    fetch-registry: true
-    register-with-eureka: true
     #服务续费 改为5毫秒一次
     registry-fetch-interval-seconds: 5
   instance:
@@ -33,3 +31,22 @@ zuul:
   prefix: /api  # 添加路由前缀
   routes:
     item-service: /item/** # 将商品微服务映射到/item/**
+    upload-service: /upload/**
+ly:
+  cors:
+    allowedOrigins:
+      - http://manage.leyou.com
+      - http://www.leyou.com
+    allowedCredentials: true
+    allowedHeaders:
+      - "*"
+    allowedMethods:
+      - GET
+      - POST
+      - DELETE
+      - PUT
+      - OPTIONS
+      - HEAD
+    maxAge: 3600
+    filterPath: "/**"
+

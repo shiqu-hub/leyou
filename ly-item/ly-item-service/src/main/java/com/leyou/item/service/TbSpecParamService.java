@@ -17,4 +17,6 @@ import java.util.List;
 public interface TbSpecParamService extends IService<TbSpecParam> {
 
     List<SpecParamDTO> findSpecParamByCategoryId(Long gid, Long cid, Boolean searching);
+
+    void saveSpecParam(TbSpecParam specParam);
 }

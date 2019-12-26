@@ -12,6 +12,7 @@ import com.leyou.item.service.TbSpecGroupService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,5 +37,18 @@ public class TbSpecGroupServiceImpl extends ServiceImpl<TbSpecGroupMapper, TbSpe
         }
         List<SpecGroupDTO> groupDTOList = BeanHelper.copyWithCollection(specGroupList, SpecGroupDTO.class);
         return groupDTOList;
+    }
+
+    @Override
+    public void saveSpecGroup(TbSpecGroup specGroup) {
+        if ("".equals(specGroup.getName())){
+            throw new LyException(ExceptionEnum.INVALID_PARAM_ERROR);
+        }
+        specGroup.setCreateTime(new Date());
+        specGroup.setUpdateTime(new Date());
+        boolean result = this.save(specGroup);
+        if (!result){
+            throw new LyException(ExceptionEnum.INSERT_OPERATION_FAIL);
+        }
     }
 }

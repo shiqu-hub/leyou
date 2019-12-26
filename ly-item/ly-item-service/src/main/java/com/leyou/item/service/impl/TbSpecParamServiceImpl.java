@@ -1,6 +1,7 @@
 package com.leyou.item.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.leyou.common.enums.ExceptionEnum;
 import com.leyou.common.exceptions.LyException;
@@ -12,6 +13,7 @@ import com.leyou.item.service.TbSpecParamService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,5 +48,24 @@ public class TbSpecParamServiceImpl extends ServiceImpl<TbSpecParamMapper, TbSpe
             throw new LyException(ExceptionEnum.SPEC_NOT_FOUND);
         }
         return BeanHelper.copyWithCollection(specParamList,SpecParamDTO.class);
+    }
+
+    @Override
+    public void saveSpecParam(TbSpecParam specParam) {
+        if (specParam.getName()==null){
+            throw new LyException(ExceptionEnum.INVALID_PARAM_ERROR);
+        }
+        QueryWrapper<TbSpecParam> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(TbSpecParam::getCid,specParam.getCid()).eq(TbSpecParam::getGroupId,specParam.getGroupId()).eq(TbSpecParam::getName,specParam.getName());
+        List<TbSpecParam> specParamList = this.list(queryWrapper);
+        if (!CollectionUtils.isEmpty(specParamList)){
+            throw new LyException(ExceptionEnum.INSERT_OPERATION_PARAM);
+        }
+        specParam.setCreateTime(new Date());
+        specParam.setUpdateTime(new Date());
+        boolean result = this.save(specParam);
+        if (!result) {
+            throw new LyException(ExceptionEnum.INSERT_OPERATION_FAIL);
+        }
     }
 }

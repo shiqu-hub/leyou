@@ -17,4 +17,6 @@ import java.util.List;
 public interface TbSpecGroupService extends IService<TbSpecGroup> {
 
     List<SpecGroupDTO> findSpecGroupByCategoryId(Long id);
+
+    void saveSpecGroup(TbSpecGroup specGroup);
 }

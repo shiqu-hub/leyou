@@ -25,6 +25,7 @@ public enum ExceptionEnum {
     ORDER_NOT_FOUND(404, "订单不存在！"),
     ORDER_DETAIL_NOT_FOUND(404, "订单数据不存在！"),
 
+    INSERT_OPERATION_PARAM(500,"参数名称已存在"),
     DATA_TRANSFER_ERROR(500, "数据转换异常！"),
     INSERT_OPERATION_FAIL(500, "新增操作失败！"),
     UPDATE_OPERATION_FAIL(500, "更新操作失败！"),

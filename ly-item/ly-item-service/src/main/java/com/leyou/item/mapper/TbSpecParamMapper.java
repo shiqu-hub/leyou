@@ -3,6 +3,8 @@ package com.leyou.item.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.leyou.item.entity.TbSpecParam;
 
+import java.util.List;
+
 /**
  * <p>
  * 规格参数组下的参数名 Mapper 接口

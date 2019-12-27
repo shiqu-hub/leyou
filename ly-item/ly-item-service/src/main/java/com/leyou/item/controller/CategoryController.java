@@ -19,7 +19,7 @@ public class CategoryController {
     @Autowired
     private TbCategoryService categoryService;
 
-    @RequestMapping("/of/parent")
+    @RequestMapping(value = "/of/parent",name = "根据parentid获取分类信息")
     //@CrossOrigin(origins = "http://manage.leyou.com")
     public ResponseEntity<List<CategoryDTO>> findByParentId(@RequestParam("pid") Long pid) {
         //创建一个用来构建条件的对象

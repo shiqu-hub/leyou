@@ -118,4 +118,13 @@ public class TbBrandServiceImpl extends ServiceImpl<TbBrandMapper, TbBrand> impl
             categoryBrandService.saveBatch(list);
         }
     }
+
+    @Override
+    public List<BrandDTO> findBrandByCategoryId(Long id) {
+       List<TbBrand> brandList= this.getBaseMapper().findBrandByCategoryId(id);
+if (CollectionUtils.isEmpty(brandList)) {
+    throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+}
+return BeanHelper.copyWithCollection(brandList,BrandDTO.class);
+    }
 }

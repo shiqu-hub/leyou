@@ -29,12 +29,17 @@ public class SpecController {
     }
 
     @PostMapping(value = "/group", name = "保存分组信息")
-    public ResponseEntity<List<Void>> saveSpecGroup(@RequestBody TbSpecGroup specGroup) {
+    public ResponseEntity<Void> saveSpecGroup(@RequestBody TbSpecGroup specGroup) {
         specGroupService.saveSpecGroup(specGroup);
         return ResponseEntity.ok().build();
     }
 
-
+    /**
+     * @param gid       规格组表的id
+     * @param cid       商品id
+     * @param searching 是否搜索
+     * @return
+     */
     @GetMapping(value = "/params", name = "查看详细属性信息")
     public ResponseEntity<List<SpecParamDTO>> findSpecParamByCategoryId(
             @RequestParam(value = "gid", required = false) Long gid,
@@ -45,7 +50,7 @@ public class SpecController {
     }
 
     @PostMapping(value = "/param", name = "保存参数信息")
-    public ResponseEntity<List<Void>> saveSpecParam(@RequestBody TbSpecParam specParam) {
+    public ResponseEntity<Void> saveSpecParam(@RequestBody TbSpecParam specParam) {
         specParamService.saveSpecParam(specParam);
         return ResponseEntity.ok().build();
     }

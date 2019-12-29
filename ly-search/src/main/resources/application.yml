@@ -1,0 +1,26 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: search-service
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9300
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+      # 获取服务列表
+      #当服务消费者启动时，会检测`eureka.client.fetch-registry=true`参数的值，如果为true，
+      #则会从Eureka Server服务的列表只读备份，
+      #然后缓存在本地。默认`每隔30秒`会重新获取并更新数据
+    registry-fetch-interval-seconds: 10
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+ribbon:
+  ConnectTimeout: 500 # 连接超时时长
+  ReadTimeout: 2000 # 数据通信超时时长
+  MaxAutoRetries: 0 # 当前服务器的重试次数
+  MaxAutoRetriesNextServer: 1 # 重试多少次服务
+  OkToRetryOnAllOperations: false # 是否对所有的请求方式都重试 GET PUT DELETE POST

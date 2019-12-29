@@ -40,7 +40,7 @@ public class SpecController {
      * @param searching 是否搜索
      * @return
      */
-    @GetMapping(value = "/params", name = "查看详细属性信息")
+    @GetMapping(value = "/params", name = "根据分类ID查询规格组信息")
     public ResponseEntity<List<SpecParamDTO>> findSpecParamByCategoryId(
             @RequestParam(value = "gid", required = false) Long gid,
             @RequestParam(value = "cid", required = false) Long cid,

@@ -12,7 +12,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: 127.0.0.1
-    # instance-id: ${eureka.instance.ip-address}:${server.port} # 自定义实例的id
+    instance-id: ${eureka.instance.ip-address}:${server.port} # 自定义实例的id
     #熔断超时时长：6000ms
 hystrix:
   command:

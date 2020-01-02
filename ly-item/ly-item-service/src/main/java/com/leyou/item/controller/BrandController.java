@@ -1,15 +1,22 @@
 package com.leyou.item.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.leyou.common.enums.ExceptionEnum;
+import com.leyou.common.exceptions.LyException;
+import com.leyou.common.utils.BeanHelper;
 import com.leyou.common.vo.PageResult;
 import com.leyou.item.dto.BrandDTO;
+import com.leyou.item.entity.TbBrand;
 import com.leyou.item.service.TbBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/brand")
@@ -52,6 +59,13 @@ public class BrandController {
     @GetMapping(value = "/of/category", name = "根据分类id查询品牌信息")
     public ResponseEntity<List<BrandDTO>> findBrandByCategory(@RequestParam("id") Long id) {
         List<BrandDTO> brandDTOList = brandService.findBrandByCategoryId(id);
+        return ResponseEntity.ok(brandDTOList);
+    }
+
+    @GetMapping(value = "/list",name = "查询品牌集合")
+    public ResponseEntity<List<BrandDTO>> findBrandsByIds(@RequestParam(name = "ids") List<Long> ids){
+        List<BrandDTO> brandDTOList = brandService.findBrandsByIds(ids);
+
         return ResponseEntity.ok(brandDTOList);
     }
 }

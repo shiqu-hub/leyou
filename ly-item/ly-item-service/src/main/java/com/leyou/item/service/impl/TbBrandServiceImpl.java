@@ -22,8 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -55,12 +57,14 @@ public class TbBrandServiceImpl extends ServiceImpl<TbBrandMapper, TbBrand> impl
             }
         }
         IPage<TbBrand> iPage = this.page(p, queryWrapper);
-        List<TbBrand> brandList = iPage.getRecords(); //当前页数据
+        //当前页数据
+        List<TbBrand> brandList = iPage.getRecords();
 
         if (CollectionUtils.isEmpty(brandList)) {
             throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
         }
-        long total = iPage.getTotal(); //总条数
+        //总条数
+        long total = iPage.getTotal();
 
         List<BrandDTO> brandDTOList = BeanHelper.copyWithCollection(brandList, BrandDTO.class);
         return new PageResult<BrandDTO>(total, brandDTOList);
@@ -95,16 +99,16 @@ public class TbBrandServiceImpl extends ServiceImpl<TbBrandMapper, TbBrand> impl
         TbBrand tbBrand = BeanHelper.copyProperties(brandDTO, TbBrand.class);
         tbBrand.setUpdateTime(new Date());
         boolean isUpdate = this.updateById(tbBrand);
-        if (!isUpdate){
+        if (!isUpdate) {
             throw new LyException(ExceptionEnum.UPDATE_OPERATION_FAIL);
         }
 //      2.删除中间表数据
         Long brandId = tbBrand.getId();
-        if (!CollectionUtils.isEmpty(cids)){
+        if (!CollectionUtils.isEmpty(cids)) {
             QueryWrapper<TbCategoryBrand> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(TbCategoryBrand::getBrandId,brandId);
+            queryWrapper.lambda().eq(TbCategoryBrand::getBrandId, brandId);
             boolean isRemove = categoryBrandService.remove(queryWrapper);
-            if (!isRemove){
+            if (!isRemove) {
                 throw new LyException(ExceptionEnum.DELETE_OPERATION_FAIL);
             }
 //      3.新增中间表数据
@@ -121,10 +125,22 @@ public class TbBrandServiceImpl extends ServiceImpl<TbBrandMapper, TbBrand> impl
 
     @Override
     public List<BrandDTO> findBrandByCategoryId(Long id) {
-       List<TbBrand> brandList= this.getBaseMapper().findBrandByCategoryId(id);
-if (CollectionUtils.isEmpty(brandList)) {
-    throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
-}
-return BeanHelper.copyWithCollection(brandList,BrandDTO.class);
+        List<TbBrand> brandList = this.getBaseMapper().findBrandByCategoryId(id);
+        if (CollectionUtils.isEmpty(brandList)) {
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        return BeanHelper.copyWithCollection(brandList, BrandDTO.class);
+    }
+
+    @Override
+    public List<BrandDTO> findBrandsByIds(List<Long> ids) {
+        Collection<TbBrand> tbBrandCollection = this.listByIds(ids);
+        if (CollectionUtils.isEmpty(tbBrandCollection)){
+            throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+        }
+        List<BrandDTO> brandDTOList=tbBrandCollection.stream().map(tbBrand -> {
+            return BeanHelper.copyProperties(tbBrand,BrandDTO.class);
+        }).collect(Collectors.toList());
+        return brandDTOList;
     }
 }

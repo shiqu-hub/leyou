@@ -11,7 +11,9 @@ import com.leyou.item.service.TbCategoryService;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -31,5 +33,16 @@ public class TbCategoryServiceImpl extends ServiceImpl<TbCategoryMapper, TbCateg
             throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
         }
         return BeanHelper.copyWithCollection(tbCategoryList,CategoryDTO.class);
+    }
+
+    @Override
+    public List<CategoryDTO> findCategorysByIds(List<Long> ids) {
+        Collection<TbCategory> tbCategories = this.listByIds(ids);
+        if (CollectionUtils.isEmpty(tbCategories)) {
+            throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+        }
+        return tbCategories.stream().map(tbCategory -> {
+           return BeanHelper.copyProperties(tbCategory,CategoryDTO.class);
+        }).collect(Collectors.toList());
     }
 }

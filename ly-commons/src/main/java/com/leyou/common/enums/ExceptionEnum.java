@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionEnum {
-    ITEM_PRICE_NOT_NULL(501,"价格不能为空"),
+    TEM_PRICE_NOT_NULL(501,"价格不能为空"),
     UPLOAD_FILE_ERROR(502,"上传失败，请重试"),
 
     INVALID_FILE_TYPE(400, "无效的文件类型！"),

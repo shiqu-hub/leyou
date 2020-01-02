@@ -38,5 +38,8 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTO>> findCategoryListByBrandId(@RequestParam(name = "id") Long brandId) {
         return ResponseEntity.ok(categoryService.findCategoryListByBrandId(brandId));
     }
-
+    @GetMapping(value = "/list",name = "根据分类id查询分类数据")
+public ResponseEntity<List<CategoryDTO>> findCategorysByIds(@RequestParam("ids") List<Long> ids){
+       return ResponseEntity.ok(categoryService.findCategorysByIds(ids));
+    }
 }

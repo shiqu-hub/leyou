@@ -18,4 +18,6 @@ import java.util.List;
 public interface TbCategoryService extends IService<TbCategory> {
 
     List<CategoryDTO> findCategoryListByBrandId(Long brandId);
+
+    List<CategoryDTO> findCategorysByIds(List<Long> ids);
 }

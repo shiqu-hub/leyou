@@ -54,4 +54,10 @@ public class SpecController {
         specParamService.saveSpecParam(specParam);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping(value = "/of/category", name = "根据categoryId查询规格参数组合组内参数")
+    public ResponseEntity<List<SpecGroupDTO>> findSpecGroupWithParamListByCategoryId(@RequestParam("id") Long id) {
+     List<SpecGroupDTO> specGroupDTOList = specParamService.findSpecGroupWithParamListByCategoryId(id);
+        return ResponseEntity.ok(specGroupDTOList);
+    }
 }

@@ -1,9 +1,6 @@
 package com.leyou.item.controller;
 
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.leyou.common.enums.ExceptionEnum;
-import com.leyou.common.exceptions.LyException;
 import com.leyou.common.utils.BeanHelper;
 import com.leyou.common.vo.PageResult;
 import com.leyou.item.dto.BrandDTO;
@@ -14,12 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/brand")
+@RequestMapping(value = "/brand")
 public class BrandController {
 
     @Autowired
@@ -65,7 +60,12 @@ public class BrandController {
     @GetMapping(value = "/list",name = "查询品牌集合")
     public ResponseEntity<List<BrandDTO>> findBrandsByIds(@RequestParam(name = "ids") List<Long> ids){
         List<BrandDTO> brandDTOList = brandService.findBrandsByIds(ids);
-
         return ResponseEntity.ok(brandDTOList);
+    }
+
+    @GetMapping(value = "/{id}",name = "根据品牌id查询品牌")
+    public ResponseEntity<BrandDTO> findBrandById(@PathVariable(value = "id") Long id){
+        TbBrand tbBrand = brandService.getById(id);
+        return ResponseEntity.ok(BeanHelper.copyProperties(tbBrand,BrandDTO.class));
     }
 }

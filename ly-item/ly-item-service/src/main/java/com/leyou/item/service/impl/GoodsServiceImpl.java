@@ -176,6 +176,15 @@ public class GoodsServiceImpl implements GoodsService {
         }
     }
 
+    @Override
+    public SpuDTO findSpuById(Long spuId) {
+        TbSpu tbSpu = SpuService.getById(spuId);
+        if (tbSpu==null){
+            throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
+        }
+        return BeanHelper.copyProperties(tbSpu,SpuDTO.class);
+    }
+
     private List<SpuDTO> handlerBrandAndCategoryName(List<SpuDTO> spuDTOList) {
         for (SpuDTO spuDTO : spuDTOList) {
             //处理品牌名称

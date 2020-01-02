@@ -3,8 +3,8 @@ package com.leyou.item.client;
 import com.leyou.common.vo.PageResult;
 import com.leyou.item.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -72,10 +72,34 @@ public interface ItemClient {
     public List<BrandDTO> findBrandsByIds(@RequestParam("ids") List<Long> ids);
 
     /**
-     *
+     * 根据分类id查询分类数据
      * @param ids  商品id的集合
      * @return     商品的集合
      */
     @GetMapping(value = "/category/list",name = "根据分类id查询分类数据")
     public List<CategoryDTO> findCategorysByIds(@RequestParam("ids") List<Long> ids);
+
+    /**
+     * 根据spu的id查询spu
+     * @param id spu的id
+     * @return  spu对象
+     */
+    @GetMapping(value = "/spu/{id}",name = "根据spuId查询spu对象")
+    public SpuDTO findSpuById(@PathVariable("id") Long id);
+
+    /**
+     * 根据品牌id查询品牌
+     * @param id brand的id
+     * @return brandDTO对象
+     */
+    @GetMapping(value = "/brand/{id}",name = "根据品牌id查询品牌")
+    public BrandDTO findBrandById(@PathVariable(name = "id") Long id);
+
+    /**
+     * 根据categoryId查询规格参数组合组内参数
+     * @param id 商品的id
+     * @return  规格组的集合
+     */
+    @GetMapping(value = "/spec/of/category", name = "根据categoryId查询规格参数组合组内参数")
+    public List<SpecGroupDTO> findSpecGroupWithParamListByCategoryId(@RequestParam("id") Long id);
 }

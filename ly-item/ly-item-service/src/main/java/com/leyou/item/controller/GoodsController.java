@@ -61,4 +61,9 @@ public class GoodsController {
         goodsService.updateGoods(spuDTO);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/spu/{id}")
+    public ResponseEntity<SpuDTO> findSpuById(@PathVariable Long id){
+        return ResponseEntity.ok(goodsService.findSpuById(id));
+    }
 }

@@ -32,3 +32,7 @@ eureka:
   #服务续费
     lease-renewal-interval-in-seconds: 30 #服务续约(renew)的间隔，默认为30秒
     lease-expiration-duration-in-seconds: 90 #服务失效时间，默认值90秒
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: ${spring.application.name}

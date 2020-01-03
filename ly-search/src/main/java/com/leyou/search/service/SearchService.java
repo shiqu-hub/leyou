@@ -9,6 +9,7 @@ import com.leyou.item.dto.*;
 import com.leyou.search.dto.GoodsDTO;
 import com.leyou.search.dto.SearchRequest;
 import com.leyou.search.entity.Goods;
+import com.leyou.search.repository.GoodsRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -39,6 +40,9 @@ public class SearchService {
 
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Autowired
+    private GoodsRepository goodsRepository;
 
     public Goods buildGoods(SpuDTO spuDTO) {
         Goods goods = new Goods();
@@ -171,7 +175,6 @@ public class SearchService {
         //筛选查询结果
         searchQueryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id", "subTitle", "skus"}, null));
 
-
         AggregatedPage<Goods> aggregatedPage = elasticsearchTemplate.queryForPage(searchQueryBuilder.build(), Goods.class);
         Integer totalPages = aggregatedPage.getTotalPages();
         long totalElements = aggregatedPage.getTotalElements();
@@ -180,6 +183,7 @@ public class SearchService {
         List<GoodsDTO> goodsDTOList = BeanHelper.copyWithCollection(goodsList, GoodsDTO.class);
         return new PageResult<GoodsDTO>(totalElements, totalPages.longValue(), goodsDTOList);
     }
+
     //    构建基本查询
     private NativeSearchQueryBuilder buildBaseQuery(SearchRequest searchRequest, NativeSearchQueryBuilder searchQueryBuilder) {
         //根据关键字查询
@@ -228,6 +232,7 @@ public class SearchService {
 
         return filterMap;
     }
+
     //处理分类聚合结果
     private void handlerCategoryAgg(Map<String, List<?>> filterMap, NativeSearchQueryBuilder searchQueryBuilder, Aggregations aggregations) {
         //获取分类聚合结果
@@ -258,6 +263,7 @@ public class SearchService {
             }
         }
     }
+
     //处理品牌的聚合结果
     private void handlerBrandAgg(Map<String, List<?>> filterMap, Aggregations aggregations) {
         //获取品牌聚合结果
@@ -267,5 +273,18 @@ public class SearchService {
         //根据品牌id 获取品牌
         List<BrandDTO> brandDTOList = itemClient.findBrandsByIds(brandIdList);
         filterMap.put("品牌", brandDTOList);
+    }
+
+    public void createIndex(Long spuId) {
+        //查询spu
+        SpuDTO spu = itemClient.findSpuById(spuId);
+        //构建成goods对象
+        Goods goods = buildGoods(spu);
+        //保存到索引库
+        goodsRepository.save(goods);
+    }
+
+    public void removeIndex(Long spuId) {
+        goodsRepository.deleteById(spuId);
     }
 }

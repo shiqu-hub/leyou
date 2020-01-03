@@ -1,0 +1,19 @@
+server:
+  port: 8086
+spring:
+  application:
+    name: sms-service
+rocketmq:
+  name-server: 172.20.10.3:9876
+  producer:
+    group: ${spring.application.name}
+ly:
+  sms:
+    accessKeyId: LTAI4FjEcSNabYVvps62ojBH
+    accessKeySecret: cHHDQ4UNmmrX7bDSY6DXnN9lMfAiHB
+    signName: mk白鹭  # 签名名称
+    verifyCodeTemplate: SMS_176531210  # 模板code
+    domain: dysmsapi.aliyuncs.com  # 域名
+    action: SendSMS  # API类型，发送短信
+    version: 2017-05-25  # API版本，固定值
+    regionID: cn-hangzhou  # 区域id

@@ -14,6 +14,7 @@ import com.leyou.item.dto.SpuDetailDTO;
 import com.leyou.item.entity.*;
 import com.leyou.item.service.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.leyou.common.constants.RocketMQConstants.TAGS.ITEM_DOWN_TAGS;
+import static com.leyou.common.constants.RocketMQConstants.TAGS.ITEM_UP_TAGS;
+import static com.leyou.common.constants.RocketMQConstants.TOPIC.ITEM_TOPIC_NAME;
 
 @Service
 public class GoodsServiceImpl implements GoodsService {
@@ -36,7 +41,8 @@ public class GoodsServiceImpl implements GoodsService {
     private TbSpuDetailService spuDetailService;
     @Autowired
     private TbSkuService skuService;
-
+    @Autowired
+    private RocketMQTemplate rocketMQTemplate;
 
     @Override
     public PageResult<SpuDTO> findSpuByPage(Integer page, Integer rows, String key, Boolean saleable) {
@@ -94,10 +100,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public void updateSaleable(Long id, Boolean saleable) {
+    public void updateSaleable(Long spuId, Boolean saleable) {
 //     1.更新spu
         TbSpu tbSpu = new TbSpu();
-        tbSpu.setId(id);
+        tbSpu.setId(spuId);
         tbSpu.setSaleable(saleable);
         boolean result = SpuService.updateById(tbSpu);
         if (!result) {
@@ -107,17 +113,20 @@ public class GoodsServiceImpl implements GoodsService {
         UpdateWrapper<TbSku> updateWrapper = new UpdateWrapper<>();
         //设置需要更新的内容，也可以使用lambda的方式
         updateWrapper.set("enable", saleable);
-        updateWrapper.eq("spu_id", id);
+        updateWrapper.eq("spu_id", spuId);
         boolean result1 = skuService.update(updateWrapper);
         if (!result1) {
             throw new LyException(ExceptionEnum.UPDATE_OPERATION_FAIL);
         }
+        //发送 消息 ,消息内容是spuid
+        String tag = saleable ? ITEM_UP_TAGS : ITEM_DOWN_TAGS;
+        rocketMQTemplate.convertAndSend(ITEM_TOPIC_NAME+":"+tag,spuId);
     }
 
     @Override
     public SpuDetailDTO findSpuDetailBySpuId(Long spuId) {
         TbSpuDetail spuDetail = spuDetailService.getById(spuId);
-        if (spuDetail==null){
+        if (spuDetail == null) {
             throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
         }
         return BeanHelper.copyProperties(spuDetail, SpuDetailDTO.class);
@@ -126,9 +135,9 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public List<SkuDTO> findSkuListBySpuId(Long spuId) {
         QueryWrapper<TbSku> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(TbSku::getSpuId,spuId);
+        queryWrapper.lambda().eq(TbSku::getSpuId, spuId);
         List<TbSku> skuList = skuService.list(queryWrapper);
-        if (CollectionUtils.isEmpty(skuList)){
+        if (CollectionUtils.isEmpty(skuList)) {
             throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
         }
         List<SkuDTO> skuDTOList = BeanHelper.copyWithCollection(skuList, SkuDTO.class);
@@ -159,7 +168,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
 //       3.先删除sku数据
         QueryWrapper<TbSku> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(TbSku::getSpuId,spuDTO.getId());
+        queryWrapper.lambda().eq(TbSku::getSpuId, spuDTO.getId());
         skuService.remove(queryWrapper);
 //       4.保存sku数据
         List<SkuDTO> skuDTOList = spuDTO.getSkus();
@@ -179,10 +188,10 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public SpuDTO findSpuById(Long spuId) {
         TbSpu tbSpu = SpuService.getById(spuId);
-        if (tbSpu==null){
+        if (tbSpu == null) {
             throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
         }
-        return BeanHelper.copyProperties(tbSpu,SpuDTO.class);
+        return BeanHelper.copyProperties(tbSpu, SpuDTO.class);
     }
 
     private List<SpuDTO> handlerBrandAndCategoryName(List<SpuDTO> spuDTOList) {

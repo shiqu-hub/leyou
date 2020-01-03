@@ -31,8 +31,9 @@ zuul:
   prefix: /api  # 添加路由前缀
   routes:
     item-service: /item/** # 将商品微服务映射到/item/**
-    upload-service: /upload/**
+    upload-service: /upload/**  #上传图片微服务
     search-service: /search/** #搜索微服务
+    user-service: /user/**  #用户登陆微服务
 ly:
   cors:
     allowedOrigins:

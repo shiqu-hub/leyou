@@ -1,4 +1,4 @@
-package  com.leyou.sms.constants;
+package com.leyou.common.constants;
 
 
 

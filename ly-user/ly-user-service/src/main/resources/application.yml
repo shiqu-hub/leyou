@@ -5,9 +5,16 @@ spring:
     name: user-service
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql:///leyou?characterEncoding=UTF-8
+    url: jdbc:mysql:///leyou?characterEncoding=UTF-8&useSSL=false
     username: root
     password: root
+  redis:
+    host: 127.0.0.1
+    port: 6379
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: ${spring.application.name}
 #myBatis-plus
 mybatis-plus:
   configuration:
@@ -24,3 +31,8 @@ eureka:
 logging:
   level:
     com.leyou: debug
+ly:
+  encoder:
+    crypt:
+      secret: ${random.uuid} # 随机的密钥，使用uuid
+      strength: 10 # 加密强度4~31，决定了密码和盐加密时的运算次数，超过10以后加密耗时会显著增加

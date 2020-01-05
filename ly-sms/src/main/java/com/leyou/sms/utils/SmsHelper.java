@@ -18,7 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.Map;
 
-import static com.leyou.sms.constants.SmsConstants.*;
+import static com.leyou.common.constants.SmsConstants.*;
 
 
 @Slf4j

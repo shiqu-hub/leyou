@@ -12,7 +12,7 @@ import java.util.Map;
 import static com.leyou.common.constants.RocketMQConstants.CONSUMER.SMS_VERIFY_CODE_CONSUMER;
 import static com.leyou.common.constants.RocketMQConstants.TAGS.VERIFY_CODE_TAGS;
 import static com.leyou.common.constants.RocketMQConstants.TOPIC.SMS_TOPIC_NAME;
-import static com.leyou.sms.constants.SmsConstants.*;
+import static com.leyou.common.constants.SmsConstants.*;
 
 @Component
 @RocketMQMessageListener(consumerGroup = SMS_VERIFY_CODE_CONSUMER,

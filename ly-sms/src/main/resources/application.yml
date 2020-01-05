@@ -4,7 +4,7 @@ spring:
   application:
     name: sms-service
 rocketmq:
-  name-server: 172.20.10.3:9876
+  name-server: 127.0.0.1:9876
   producer:
     group: ${spring.application.name}
 ly:

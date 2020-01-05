@@ -1,7 +1,8 @@
 package com.leyou.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.leyou.user.entity.TbUserAddress;
+import com.leyou.user.entity.UserAddress;
+
 
 
 /**
@@ -12,6 +13,6 @@ import com.leyou.user.entity.TbUserAddress;
  * @author kai
  * @since 2019-12-25
  */
-public interface TbUserAddressMapper extends BaseMapper<TbUserAddress> {
+public interface UserAddressMapper extends BaseMapper<UserAddress> {
 
 }

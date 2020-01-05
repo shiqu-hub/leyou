@@ -1,7 +1,7 @@
 package com.leyou.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.leyou.user.entity.TbUser;
+import com.leyou.user.entity.User;
 
 
 /**
@@ -12,6 +12,6 @@ import com.leyou.user.entity.TbUser;
  * @author kai
  * @since 2019-12-25
  */
-public interface TbUserMapper extends BaseMapper<TbUser> {
+public interface UserMapper extends BaseMapper<User> {
 
 }

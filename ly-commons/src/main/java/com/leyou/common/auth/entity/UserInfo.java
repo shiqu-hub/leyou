@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor   //自动生成无参数构造函数
+@AllArgsConstructor  //自动生成有参数构造函数
 public class UserInfo {
 
     private Long id;

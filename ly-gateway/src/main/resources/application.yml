@@ -34,6 +34,10 @@ zuul:
     upload-service: /upload/**  #上传图片微服务
     search-service: /search/** #搜索微服务
     user-service: /user/**  #用户登陆微服务
+    auth-service: /auth/** #授权中心微服务
+  sensitive-headers: # 覆盖敏感头信息 "Cookie", "Set-Cookie", "Authorization"
+  ignored-services:
+    - ly-registry
 ly:
   cors:
     allowedOrigins:
@@ -51,4 +55,17 @@ ly:
       - HEAD
     maxAge: 3600
     filterPath: "/**"
+  jwt:
+    pubKeyPath: D:/tmp/ssh/id_rsa.pub # 公钥地址 # 公钥地址
+    user:
+      cookieName: LY_TOKEN # cookie名称
+  # 白名单
+  filter:
+    allowPaths:
+      - /api/auth/login
+      - /api/search
+      - /api/user/register
+      - /api/user/check
+      - /api/user/code
+      - /api/item
 

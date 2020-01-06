@@ -1,0 +1,21 @@
+server:
+  port: 8087
+spring:
+  application:
+    name: auth-service
+  redis:
+    host: 127.0.0.1
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    registry-fetch-interval-seconds: 10
+ly:
+  jwt:
+    pubKeyPath: D:/tmp/ssh/id_rsa.pub # 公钥地址
+    priKeyPath: D:/tmp/ssh/id_rsa # 私钥地址
+    user:
+      expire: 30 # 过期时间,单位分钟
+      cookieName: LY_TOKEN # cookie名称
+      cookieDomain: leyou.com # cookie的域
+      minRefreshInterval: 15 #最小的刷新间隔，单位分钟

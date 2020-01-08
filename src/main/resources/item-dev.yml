@@ -1,0 +1,38 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: item-service
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/leyou?characterEncoding=UTF-8&useSSL=false  #amp;
+    username: root
+    password: root
+#myBatis-plus
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  #输出sql日志
+  mapper-locations: classpath*:mapper/**Mapper.xml
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka
+    # 获取服务列表
+    #当服务消费者启动时，会检测`eureka.client.fetch-registry=true`参数的值，如果为true，
+    #则会从Eureka Server服务的列表只读备份，
+    #然后缓存在本地。默认`每隔30秒`会重新获取并更新数据，这里更新为10秒
+    registry-fetch-interval-seconds: 10
+    #服务注册
+    #item-service默认注册时使用的是主机名，如果我们想用ip进行注册，可以设置以下属性
+  instance:
+    prefer-ip-address: true
+    ip-address: 127.0.0.1
+    instance-id: ${eureka.instance.ip-address}:${server.port} # 自定义实例的id
+  #服务续费
+    lease-renewal-interval-in-seconds: 30 #服务续约(renew)的间隔，默认为30秒
+    lease-expiration-duration-in-seconds: 90 #服务失效时间，默认值90秒
+rocketmq:
+  name-server: 127.0.0.1:9876
+  producer:
+    group: ${spring.application.name}

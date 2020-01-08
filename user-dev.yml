@@ -1,5 +1,7 @@
 server:
   port: 8085
+  tomcat:
+    max-threads: 10
 spring:
   application:
     name: user-service

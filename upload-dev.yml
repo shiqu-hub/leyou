@@ -1,5 +1,7 @@
 server:
   port: 8082
+  tomcat:
+    max-threads: 10
 spring:
   application:
     name: upload-service

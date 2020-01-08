@@ -1,5 +1,7 @@
 server:
   port: 12000
+  tomcat:
+    max-threads: 10
 spring:
   application:
     name: config-service

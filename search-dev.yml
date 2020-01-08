@@ -18,7 +18,7 @@ eureka:
   instance:
     prefer-ip-address: true
     ip-address: 127.0.0.1
-    instance-id: ${eureka.instance.ip-address}:${server.port} # 自定义实例的id
+    # instance-id: ${eureka.instance.ip-address}:${server.port} # 自定义实例的id
 ribbon:
   ConnectTimeout: 500 # 连接超时时长
   ReadTimeout: 2000 # 数据通信超时时长

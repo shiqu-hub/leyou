@@ -34,6 +34,11 @@
         <artifactId>aliyun-sdk-oss</artifactId>
         <version>3.4.2</version>
     </dependency>
+
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-config</artifactId>
+    </dependency>
 </dependencies>
     <build>
         <plugins>

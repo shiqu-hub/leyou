@@ -48,22 +48,29 @@ public class GoodsController {
 
     @GetMapping(value = "/spu/detail", name = "查询商品详细信息")
     public ResponseEntity<SpuDetailDTO> findSpuDetailBySpuId(@RequestParam("id") Long id) {
-        SpuDetailDTO spuDetailDTO=goodsService.findSpuDetailBySpuId(id);
+        SpuDetailDTO spuDetailDTO = goodsService.findSpuDetailBySpuId(id);
         return ResponseEntity.ok(spuDetailDTO);
     }
-    @GetMapping(value = "/sku/of/spu",name = "根据spuId查询sku数据")
-    public ResponseEntity<List<SkuDTO>> findSkuListBySpuId(@RequestParam("id")Long id){
-       List<SkuDTO> skuDTOList= goodsService.findSkuListBySpuId(id);
-       return ResponseEntity.ok(skuDTOList);
+
+    @GetMapping(value = "/sku/of/spu", name = "根据spuId查询sku数据")
+    public ResponseEntity<List<SkuDTO>> findSkuListBySpuId(@RequestParam("id") Long id) {
+        List<SkuDTO> skuDTOList = goodsService.findSkuListBySpuId(id);
+        return ResponseEntity.ok(skuDTOList);
     }
+
     @PutMapping(value = "/goods", name = "修改商品信息")
     public ResponseEntity<Void> updateGoods(@RequestBody SpuDTO spuDTO) {
         goodsService.updateGoods(spuDTO);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/spu/{id}")
-    public ResponseEntity<SpuDTO> findSpuById(@PathVariable Long id){
+    @GetMapping(value = "/spu/{id}",name = "根据spuId查询spu对象")
+    public ResponseEntity<SpuDTO> findSpuById(@PathVariable Long id) {
         return ResponseEntity.ok(goodsService.findSpuById(id));
+    }
+
+    @GetMapping(value = "/sku/list",name = "根据skuId集合查询sku数据")
+    public ResponseEntity<List<SkuDTO>> querySkuByIds(@RequestParam("ids") List<Long> ids) {
+        return ResponseEntity.ok(this.goodsService.findSkuListByIds(ids));
     }
 }

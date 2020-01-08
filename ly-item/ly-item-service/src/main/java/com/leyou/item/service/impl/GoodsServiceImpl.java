@@ -194,6 +194,19 @@ public class GoodsServiceImpl implements GoodsService {
         return BeanHelper.copyProperties(tbSpu, SpuDTO.class);
     }
 
+    @Override
+    public List<SkuDTO> findSkuListByIds(List<Long> ids) {
+        Collection<TbSku> tbSkus = skuService.listByIds(ids);
+        if (CollectionUtils.isEmpty(tbSkus)){
+            throw new LyException(ExceptionEnum.GOODS_NOT_FOUND);
+        }
+//     将tbsku逐个转为skuDTO
+       List<SkuDTO> skuDTOList= tbSkus.stream().map(tbSku -> {
+            return BeanHelper.copyProperties(tbSku,SkuDTO.class);
+        }).collect(Collectors.toList());
+        return skuDTOList;
+    }
+
     private List<SpuDTO> handlerBrandAndCategoryName(List<SpuDTO> spuDTOList) {
         for (SpuDTO spuDTO : spuDTOList) {
             //处理品牌名称

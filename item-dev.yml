@@ -8,6 +8,12 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/leyou?characterEncoding=UTF-8&useSSL=false  #amp;
     username: root
     password: root
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    virtual-host: /leyou
+    username: leyou
+    password: leyou
 #myBatis-plus
 mybatis-plus:
   configuration:

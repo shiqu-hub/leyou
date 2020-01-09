@@ -2,6 +2,7 @@ package com.leyou.item.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.leyou.item.entity.TbSku;
+import org.apache.ibatis.annotations.Update;
 
 /**
  * <p>
@@ -13,4 +14,6 @@ import com.leyou.item.entity.TbSku;
  */
 public interface TbSkuMapper extends BaseMapper<TbSku> {
 
+    @Update("UPDATE tb_sku SET stock = stock - #{num} WHERE id = #{id}")
+    int minusStock(Long skuId, Integer num);
 }

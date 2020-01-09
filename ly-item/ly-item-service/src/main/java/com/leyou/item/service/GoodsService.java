@@ -6,6 +6,7 @@ import com.leyou.item.dto.SpuDTO;
 import com.leyou.item.dto.SpuDetailDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GoodsService {
     PageResult<SpuDTO> findSpuByPage(Integer page, Integer rows, String key, Boolean saleable);
@@ -23,4 +24,6 @@ public interface GoodsService {
     SpuDTO findSpuById(Long id);
 
     List<SkuDTO> findSkuListByIds(List<Long> ids);
+
+    void minusStock(Map<Long, Integer> cartMap);
 }

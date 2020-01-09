@@ -23,6 +23,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.leyou.common.constants.RocketMQConstants.TAGS.ITEM_DOWN_TAGS;
@@ -205,6 +206,18 @@ public class GoodsServiceImpl implements GoodsService {
             return BeanHelper.copyProperties(tbSku,SkuDTO.class);
         }).collect(Collectors.toList());
         return skuDTOList;
+    }
+
+    @Transactional
+    @Override
+    public void minusStock(Map<Long, Integer> cartMap) {
+        for (Long skuId : cartMap.keySet()) {
+            Integer num = cartMap.get(skuId);
+            int count=skuService.stockMinus(skuId,num);
+            if (count!=1){
+                throw new LyException(ExceptionEnum.INVALID_ORDER_STATUS);
+            }
+        }
     }
 
     private List<SpuDTO> handlerBrandAndCategoryName(List<SpuDTO> spuDTOList) {

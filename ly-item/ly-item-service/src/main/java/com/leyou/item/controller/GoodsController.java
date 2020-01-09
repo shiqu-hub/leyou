@@ -7,10 +7,12 @@ import com.leyou.item.dto.SpuDTO;
 import com.leyou.item.dto.SpuDetailDTO;
 import com.leyou.item.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class GoodsController {
@@ -64,13 +66,19 @@ public class GoodsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/spu/{id}",name = "根据spuId查询spu对象")
+    @GetMapping(value = "/spu/{id}", name = "根据spuId查询spu对象")
     public ResponseEntity<SpuDTO> findSpuById(@PathVariable Long id) {
         return ResponseEntity.ok(goodsService.findSpuById(id));
     }
 
-    @GetMapping(value = "/sku/list",name = "根据skuId集合查询sku数据")
+    @GetMapping(value = "/sku/list", name = "根据skuId集合查询sku数据")
     public ResponseEntity<List<SkuDTO>> querySkuByIds(@RequestParam("ids") List<Long> ids) {
         return ResponseEntity.ok(this.goodsService.findSkuListByIds(ids));
+    }
+
+    @PutMapping("/stock/minu")
+    public ResponseEntity<Void> minusStock(@RequestBody Map<Long, Integer> cartMap) {
+        goodsService.minusStock(cartMap);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

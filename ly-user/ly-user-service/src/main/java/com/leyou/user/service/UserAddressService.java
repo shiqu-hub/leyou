@@ -1,7 +1,10 @@
 package com.leyou.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.leyou.user.dto.UserAddressDTO;
 import com.leyou.user.entity.UserAddress;
+
+import java.util.List;
 
 
 /**
@@ -14,4 +17,7 @@ import com.leyou.user.entity.UserAddress;
  */
 public interface UserAddressService extends IService<UserAddress> {
 
+    List<UserAddressDTO> findAddressListByUserId(Long userId);
+
+    UserAddressDTO findById(Long id);
 }

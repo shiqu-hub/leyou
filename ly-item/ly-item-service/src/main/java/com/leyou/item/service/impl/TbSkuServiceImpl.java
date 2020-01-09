@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TbSkuServiceImpl extends ServiceImpl<TbSkuMapper, TbSku> implements TbSkuService {
 
+    @Override
+    public int stockMinus(Long skuId, Integer num) {
+        return this.baseMapper.minusStock(skuId,num);
+    }
 }

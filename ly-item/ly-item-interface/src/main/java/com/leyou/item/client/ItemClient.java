@@ -3,6 +3,7 @@ package com.leyou.item.client;
 import com.leyou.common.vo.PageResult;
 import com.leyou.item.dto.*;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,4 +103,16 @@ public interface ItemClient {
      */
     @GetMapping(value = "/spec/of/category", name = "根据categoryId查询规格参数组合组内参数")
     public List<SpecGroupDTO> findSpecGroupWithParamListByCategoryId(@RequestParam("id") Long id);
+
+    /**
+     * 根据id批量查询sku
+     * @param ids skuId的集合
+     * @return sku的集合
+     */
+    @GetMapping(value = "/sku/list",name = "根据skuId集合查询sku数据")
+    public List<SkuDTO> querySkuByIds(@RequestParam("ids") List<Long> ids);
+
 }
+
+
+

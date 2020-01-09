@@ -11,6 +11,7 @@ import com.leyou.common.utils.CookieUtils;
 import com.leyou.user.client.UserClient;
 import com.leyou.user.dto.UserDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -41,6 +42,9 @@ public class AuthServiceImpl implements AuthService {
         try {
 //      查询用户
             UserDTO user = userClient.queryUserByUsernameAndPassword(username, password);
+            if (user.getId()==null){
+                throw new LyException(ExceptionEnum.INVALID_USERNAME_PASSWORD);
+            }
 //      生成userInfo, 没写权限功能，暂时都用guest
             UserInfo userInfo = new UserInfo(user.getId(), user.getUsername(), USER_ROLE);
 //      生成token

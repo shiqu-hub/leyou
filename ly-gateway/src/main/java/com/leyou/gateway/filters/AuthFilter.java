@@ -21,7 +21,7 @@ import java.util.List;
 @Slf4j
 @Component
 @EnableConfigurationProperties({JwtProperties.class, FilterProperties.class})
-public class AutoFilter extends ZuulFilter {
+public class AuthFilter extends ZuulFilter {
 
     @Autowired
     private JwtProperties jwtProp;
@@ -74,6 +74,9 @@ public class AutoFilter extends ZuulFilter {
             // 获取当前资源路径
             String path = request.getRequestURI();
             String method = request.getMethod();
+            Long userId = user.getId();
+            //  把用户id放入请求头中，方便微服务获取
+            context.addZuulRequestHeader("USER_ID",userId.toString());
             // TODO 判断权限，此处暂时空置，等待权限服务完成后补充
             log.info("【网关】用户{},角色{}。访问服务{} : {}，", user.getUsername(), role, method, path);
         } catch (Exception e) {

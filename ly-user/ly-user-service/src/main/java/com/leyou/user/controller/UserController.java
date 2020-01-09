@@ -1,8 +1,10 @@
 package com.leyou.user.controller;
 
 import com.leyou.common.exceptions.LyException;
+import com.leyou.user.dto.UserAddressDTO;
 import com.leyou.user.dto.UserDTO;
 import com.leyou.user.entity.User;
+import com.leyou.user.service.UserAddressService;
 import com.leyou.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,6 +18,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -24,6 +27,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+
 
     /**
      * 校验数据是否可用
@@ -97,4 +102,5 @@ public class UserController {
             @ApiParam(value = "数据类型，1：用户名，2：手机号", example = "1") @PathVariable(value = "type") Integer type) {
         return ResponseEntity.ok(userService.checkData(data, type));
     }
+
 }

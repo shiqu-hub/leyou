@@ -13,4 +13,5 @@ import com.leyou.item.entity.TbSku;
  */
 public interface TbSkuService extends IService<TbSku> {
 
+    int stockMinus(Long skuId, Integer num);
 }
